@@ -1,1 +1,15 @@
 <h2>Add New post</h2>
+
+<form action="/new" method="POST">
+    <div class="form-group">
+        <label>Post title</label>
+        <input type="text" class="form-control" name="title">
+    </div>
+    
+    <div class="form-group">
+        <label>Text post</label>
+        <textarea class="form-control" name="post" rows="6"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Public new post</button>
+</form>
