@@ -6,3 +6,6 @@ get '/' do
   erb "Hello, I'm Simple site!"
 end
 
+get '/new' do
+  erb "Hello World"
+end
