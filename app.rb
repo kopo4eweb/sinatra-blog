@@ -8,6 +8,16 @@ def init_db
   @db.results_as_hash = true
 end
 
+def output_error validate, params
+  validate.select {|key,_| params[key] == ''}.values.join(", ")
+end
+
+helpers do
+  def username
+    session[:identity] ? session[:identity] : 'Anonim'
+  end
+end
+
 before do
   init_db
 end
@@ -37,12 +47,36 @@ get '/' do
   erb :index
 end
 
-get '/new' do
-  erb :new
+get '/login' do
+  erb :login
 end
 
-def output_error validate, params
-  validate.select {|key,_| params[key] == ''}.values.join(", ")
+post '/login' do
+
+  validate = {
+    :login => "Login is not empty"    
+  }
+
+  @login = params[:login]
+
+  @error = output_error(validate, params)
+
+  if !@error.empty?
+    return erb :login
+  end
+
+  session[:identity] = @login
+  redirect to '/new'
+
+end
+
+get '/new' do
+  if !session[:identity] 
+    @error = "Log in to add a post"
+    return erb :login
+  end
+
+  erb :new
 end
 
 post '/new' do
