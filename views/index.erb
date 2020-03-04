@@ -4,7 +4,7 @@
     <div class="card mt-4">
         <div class="card-body">
             <h5 class="card-title"><%= post['title'] %></h5>
-            <h6 class="card-subtitle mb-3 text-muted">Added at <%= post['created_date'] %></h6>
+            <h6 class="card-subtitle mb-3 text-muted">Added at <%= post['created_date'] %> (<%= post['username'] %>)</h6>
             <p class="card-text"><%= post['post'] %></p>
             <a href="/post/<%= post['Id'] %>" class="card-link">Comments</a>
         </div>
