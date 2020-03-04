@@ -60,6 +60,6 @@ post '/new' do
   
   @db.execute 'INSERT INTO Posts (created_date, title, post) values (datetime(), ?, ?)', [@title, @post]
 
-  erb "Add post #{@title}"
+  redirect to '/'
 
 end
