@@ -10,6 +10,18 @@
 
 <hr>
 <h4>Comments:</h4>
+
+<% @comments.each do |comment| %>
+    <div class="mt-2">
+        <p>
+            <%= comment['comment'] %>
+            <br>
+            <em><%= comment['created_date'] %></em>
+        </p>
+    </div>
+    <hr>
+<% end %>
+
 <form action="/post/<%= @post['Id'] %>" method="POST">
     <div class="form-group">
         <textarea class="form-control" name="comment" rows=3 placeholder="Typed comment text here"></textarea>

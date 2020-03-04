@@ -77,6 +77,8 @@ get '/post/:id' do
   
   @post = result[0]
 
+  @comments = @db.execute 'SELECT * FROM Comments WHERE post_id = ? ORDER BY id', [id]
+
   erb :post
 end
 
@@ -85,6 +87,6 @@ post '/post/:id' do
   @comment = params[:comment]
   
   @db.execute 'INSERT INTO Comments (created_date, comment, post_id) VALUES (datetime(), ?, ?)', [@comment, id]
-
+  
   redirect to "/post/#{id}"
 end
