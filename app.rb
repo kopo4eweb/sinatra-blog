@@ -25,7 +25,7 @@ configure do
     @db.execute 'CREATE TABLE IF NOT EXISTS "Comments" (
             "Id"	INTEGER PRIMARY KEY AUTOINCREMENT,
             "created_date"	DATE,
-            "comments"	TEXT,
+            "comment"	TEXT,
             "post_id" INTEGER
           )'
 end
@@ -84,5 +84,7 @@ post '/post/:id' do
   id = params[:id]
   @comment = params[:comment]
   
-  erb "You typed  comment #{@comment} for post #{id}"
+  @db.execute 'INSERT INTO Comments (created_date, comment, post_id) VALUES (datetime(), ?, ?)', [@comment, id]
+
+  redirect to "/post/#{id}"
 end
