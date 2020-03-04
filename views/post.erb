@@ -1,9 +1,18 @@
 <h2>Post details:</h2>
 
-<div class="card mt-4">
+<div class="card mt-4 mb-5">
     <div class="card-body">
-        <h5 class="card-title"><%= @post['title'] %></h5>
+        <h3 class="card-title"><%= @post['title'] %></h5>
         <h6 class="card-subtitle mb-3 text-muted">Added at <%= @post['created_date'] %></h6>
         <p class="card-text"><%= @post['post'] %></p>
     </div>
 </div>
+
+<hr>
+<h4>Comments:</h4>
+<form action="/post/<%= @post['Id'] %>" method="POST">
+    <div class="form-group">
+        <textarea class="form-control" name="post" rows="6" placeholder="Typed comment text here"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Add comment</button>
+</form>
