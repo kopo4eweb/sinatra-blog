@@ -63,3 +63,8 @@ post '/new' do
   redirect to '/'
 
 end
+
+get '/post/:id' do
+  id = params[:id]
+  erb "View post id: #{id}"
+end
