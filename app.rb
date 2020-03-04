@@ -13,6 +13,7 @@ before do
 end
 
 configure do
+  enable :sessions
 
     init_db
     @db.execute 'CREATE TABLE IF NOT EXISTS "Posts" (
