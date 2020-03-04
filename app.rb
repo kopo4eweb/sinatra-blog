@@ -32,9 +32,29 @@ get '/new' do
   erb :new
 end
 
+def output_error validate, params
+  validate.select {|key,_| params[key] == ''}.values.join(", ")
+end
+
 post '/new' do
+
+  @error = nil
+
+  validate = {
+    :title => "Type title text",
+    :post => "Type post text",
+  }
+
   @title = params[:title]
   @post = params[:post]
 
-  erb "Add new post | #{@title} | text: #{@post}"
+  @error = output_error(validate, params)
+
+  if !@error.empty?
+    return erb :new
+  end
+
+  @error = nil
+  erb "Add post #{@title}"
+
 end
