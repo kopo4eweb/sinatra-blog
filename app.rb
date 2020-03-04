@@ -66,5 +66,10 @@ end
 
 get '/post/:id' do
   id = params[:id]
-  erb "View post id: #{id}"
+
+  result = @db.execute 'SELECT * FROM Posts WHERE Id = ?', [id]
+  
+  @post = result[0]
+
+  erb :post
 end
