@@ -25,7 +25,7 @@ configure do
 end
 
 get '/' do
-  erb "Hello, I'm Simple site!"
+  erb :index
 end
 
 get '/new' do
