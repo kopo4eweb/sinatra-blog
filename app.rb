@@ -30,7 +30,8 @@ configure do
                 "Id"	INTEGER PRIMARY KEY AUTOINCREMENT,
                 "created_date"	DATE,
                 "title"	TEXT,
-                "post"	TEXT
+                "post"	TEXT,
+                "username" TEXT
               )'
 
     @db.execute 'CREATE TABLE IF NOT EXISTS "Comments" (
@@ -99,7 +100,7 @@ post '/new' do
 
   @error = nil
   
-  @db.execute 'INSERT INTO Posts (created_date, title, post) VALUES (datetime(), ?, ?)', [@title, @post]
+  @db.execute 'INSERT INTO Posts (created_date, title, post, username) VALUES (datetime(), ?, ?, ?)', [@title, @post, username]
 
   redirect to '/'
 
