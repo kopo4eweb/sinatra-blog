@@ -55,6 +55,9 @@ post '/new' do
   end
 
   @error = nil
+  
+  @db.execute 'INSERT INTO Posts (created_date, title, post) values (datetime(), ?, ?)', [@title, @post]
+
   erb "Add post #{@title}"
 
 end
