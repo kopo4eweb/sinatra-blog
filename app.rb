@@ -79,13 +79,30 @@ get '/post/:id' do
 
   @comments = @db.execute 'SELECT * FROM Comments WHERE post_id = ? ORDER BY id', [id]
 
+  if params[:error].to_i == 1
+    @error = params[:comment] 
+  end
+ 
   erb :post
 end
 
 post '/post/:id' do
+
+  validate = {
+    :comment => "Type comment text"    
+  }
+
   id = params[:id]
   @comment = params[:comment]
+
+  @error = output_error(validate, params)
+
+  if !@error.empty?
+    redirect to "/post/#{id}?error=1&comment=Type comment text"
+  end
   
+  @error = nil
+
   @db.execute 'INSERT INTO Comments (created_date, comment, post_id) VALUES (datetime(), ?, ?)', [@comment, id]
   
   redirect to "/post/#{id}"
