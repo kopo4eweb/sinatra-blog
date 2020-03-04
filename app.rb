@@ -58,7 +58,7 @@ post '/new' do
 
   @error = nil
   
-  @db.execute 'INSERT INTO Posts (created_date, title, post) values (datetime(), ?, ?)', [@title, @post]
+  @db.execute 'INSERT INTO Posts (created_date, title, post) VALUES (datetime(), ?, ?)', [@title, @post]
 
   redirect to '/'
 
