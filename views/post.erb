@@ -14,17 +14,17 @@
 <% @comments.each do |comment| %>
     <div class="mt-2">
         <p>
-            <%= comment['comment'] %>
+            <%= comment.comment %>
             <br>
-            <span style="font-size: 0.7rem;"><em><%= comment['created_date'] %></em></span>
+            <span style="font-size: 0.7rem;"><em><%= comment.created_at %></em></span>
         </p>
     </div>
     <hr>
 <% end %>
 
-<form action="/post/<%= @post['Id'] %>" method="POST">
+<form action="/post/<%= @post.id %>" method="POST">
     <div class="form-group">
-        <textarea class="form-control" name="comment" rows=3 placeholder="Typed comment text here"></textarea>
+        <textarea class="form-control" name="comment[comment]" rows=3 placeholder="Typed comment text here"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Add comment</button>
 </form>
