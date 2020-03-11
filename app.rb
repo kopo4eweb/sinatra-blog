@@ -1,11 +1,19 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
-require 'sqlite3'
+require 'sinatra/activerecord'
 
-def init_db
-  @db = SQLite3::Database.new 'blog.db'
-  @db.results_as_hash = true
+set :database, {adapter: "sqlite3", database: "blog.db"}
+
+class Post < ActiveRecord::Base
+  validates :title, presence: true, length: {minimum: 2}
+  validates :post, presence: true
+
+  has_many :comments, dependent: :destroy
+end
+
+class Comment < ActiveRecord::Base
+  belongs_to :post
 end
 
 def output_error validate, params
@@ -18,32 +26,13 @@ helpers do
   end
 end
 
-before do
-  init_db
-end
 
 configure do
   enable :sessions
-
-    init_db
-    @db.execute 'CREATE TABLE IF NOT EXISTS "Posts" (
-                "Id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-                "created_date"	DATE,
-                "title"	TEXT,
-                "post"	TEXT,
-                "username" TEXT
-              )'
-
-    @db.execute 'CREATE TABLE IF NOT EXISTS "Comments" (
-            "Id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-            "created_date"	DATE,
-            "comment"	TEXT,
-            "post_id" INTEGER
-          )'
 end
 
 get '/' do
-  @result = @db.execute 'SELECT * FROM Posts ORDER BY id DESC'
+  @result = Post.order('created_at DESC')
   
   erb :index
 end
@@ -72,6 +61,9 @@ post '/login' do
 end
 
 get '/new' do
+
+  @p = Post.new
+
   if !session[:identity] 
     @error = "Log in to add a post"
     return erb :login
@@ -81,29 +73,15 @@ get '/new' do
 end
 
 post '/new' do
+  params['post']['username'] = session[:identity]
 
-  @error = nil
-
-  validate = {
-    :title => "Type title text",
-    :post => "Type post text",
-  }
-
-  @title = params[:title]
-  @post = params[:post]
-
-  @error = output_error(validate, params)
-
-  if !@error.empty?
-    return erb :new
+  @p = Post.new params[:post]
+  if @p.save
+    redirect to '/'
+  else
+    @error = @p.errors.full_messages.uniq.join(", ")
+    erb :new
   end
-
-  @error = nil
-  
-  @db.execute 'INSERT INTO Posts (created_date, title, post, username) VALUES (datetime(), ?, ?, ?)', [@title, @post, username]
-
-  redirect to '/'
-
 end
 
 get '/post/:id' do
