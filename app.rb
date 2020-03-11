@@ -13,6 +13,8 @@ class Post < ActiveRecord::Base
 end
 
 class Comment < ActiveRecord::Base
+  validates :comment, presence: true
+
   belongs_to :post
 end
 
@@ -100,22 +102,16 @@ end
 
 post '/post/:id' do
 
-  validate = {
-    :comment => "Type comment text"    
-  }
-
   id = params[:id]
-  @comment = params[:comment]
 
-  @error = output_error(validate, params)
+  # @p = Post.find(id)
+  @c = Comment.new params[:comment]
+  @c.post_id = id
 
-  if !@error.empty?
+  if @c.save
+    redirect to "/post/#{id}"
+  else 
     redirect to "/post/#{id}?error=1&comment=Type comment text"
   end
   
-  @error = nil
-
-  @db.execute 'INSERT INTO Comments (created_date, comment, post_id) VALUES (datetime(), ?, ?)', [@comment, id]
-  
-  redirect to "/post/#{id}"
 end
