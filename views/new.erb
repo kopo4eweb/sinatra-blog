@@ -3,12 +3,12 @@
 <form action="/new" method="POST">
     <div class="form-group">
         <label>Post title</label>
-        <input type="text" class="form-control" name="title">
+        <input type="text" class="form-control" name="post[title]" value="<%= @p.title %>">
     </div>
     
     <div class="form-group">
         <label>Text post</label>
-        <textarea class="form-control" name="post" rows="6"></textarea>
+        <textarea class="form-control" name="post[post]" rows="6"><%= @p.post %></textarea>
     </div>
 
     <button type="submit" class="btn btn-primary">Public new post</button>
