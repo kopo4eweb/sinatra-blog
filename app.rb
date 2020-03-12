@@ -104,11 +104,12 @@ post '/post/:id' do
 
   id = params[:id]
 
-  # @p = Post.find(id)
-  @c = Comment.new params[:comment]
-  @c.post_id = id
+  post = Post.find(id)
 
-  if @c.save
+  c = post.comments
+  c = c.new params[:comment]
+
+  if c.save
     redirect to "/post/#{id}"
   else 
     redirect to "/post/#{id}?error=1&comment=Type comment text"
